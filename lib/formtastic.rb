@@ -285,6 +285,9 @@ module Formtastic #:nodoc:
           args  = self.association_columns(:belongs_to)
           args += self.content_columns
           args -= RESERVED_COLUMNS
+          if html_options[:except]
+            args.reject! { |col| [html_options.delete(:except)].flatten.map(&:to_s).include?(col.to_s) }
+          end
           args.compact!
         end
         legend = args.shift if args.first.is_a?(::String)
